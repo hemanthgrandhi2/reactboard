@@ -1,0 +1,62 @@
+dashboard.css .test {
+  height: 300px;
+}
+
+.test2 {
+  height: 300px;
+  overflow-y: auto;
+  width: 400px;
+}
+
+table {
+  width: 100%;
+  display: table;
+}
+thead {
+  display: inline-table;
+  width: 50%;
+  height: 20px;
+  margin-bottom: 10px;
+}
+.time {
+  width: 50%;
+}
+.param {
+  width: 25%;
+}
+.value {
+  width: 180px !important;
+  margin-right: 100px;
+}
+.error {
+  width: 100px !important;
+  
+
+}
+
+.mapContainer{
+  width:400px;
+  height:405px !important;
+}
+tbody {
+  height: 255px;
+  display: inline-table;
+  width: 100%;
+  overflow: scroll;
+}
+.table {
+  overflow-y: scroll;
+}
+
+.tablehead{
+  display:block !important;
+  width:100% !important;
+  height: 50px;
+}
+
+.tablebody{
+  display:block;
+  overflow:auto;
+  height:300px;
+  width:100%;
+}
