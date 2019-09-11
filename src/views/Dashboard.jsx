@@ -33,6 +33,7 @@ class Dashboard extends React.Component {
       alerts: [],
       signalStrength: null,
       deviceStatus: null,
+      connectionStatus: null,
       lat: 0,
       long: 0
     };
@@ -45,7 +46,6 @@ class Dashboard extends React.Component {
   // ,{'mode': 'no-cors'}
   componentDidMount() {
     this.timer = setInterval(() => this.getTemperature(), 1000);
-
     this.timer = setInterval(() => this.getAlerts(), 1000);
     this.timer = setInterval(() => this.getSignal(), 1000);
     this.timer = setInterval(() => this.getDeviceStatus(), 1000);
@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
         this.setState({
           temperature: a
         });
-        console.log(this.state.temperature);
+        //console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
@@ -160,10 +160,30 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         //set your data here
-        this.setState({
-          deviceStatus: responseData
-        });
-      })
+        let x = responseData[0]["DATE"];
+        let newdate = x
+          .split("/")
+          .reverse()
+          .join("-");
+        let t1 = newdate + " " + responseData[0]["TIME"];
+        let last_time = new Date(t1)
+        let current_time = new Date();
+        let time_difference =current_time - last_time
+        if (time_difference > 18000){
+          this.setState({
+            deviceStatus: t1,
+            connectionStatus: 'DISCONNECTED'
+          });
+        }
+        else{
+          this.setState({
+            deviceStatus: t1,
+            connectionStatus: 'CONNECTED'
+          })
+        }
+        //console.log(time_difference)
+        }
+      )
       .catch(error => {
         console.error(error);
       });
@@ -177,9 +197,9 @@ class Dashboard extends React.Component {
           lat: parseFloat(responseData[0]["LONGITUDE"]),
           long: parseFloat(responseData[0]["LATTITUDE"])
         });
-        console.log(this.state.long, this.state.lat)
+        //console.log(this.state.long, this.state.lat)
         this.forceUpdate();
-        console.log(parseFloat(responseData[0]["LATTITUDE"]));
+        //console.log(parseFloat(responseData[0]["LATTITUDE"]));
       })
       .catch(error => {
         console.error(error);
@@ -225,10 +245,11 @@ class Dashboard extends React.Component {
                   ) : (
                     <CardTitle tag="h2">
                       <i className="tim-icons icon-send text-success" />
-                      Last Connected at : 
+                      Device Status: {this.state.connectionStatus}
                     </CardTitle>
                   )}
                 </CardHeader>
+                 &nbsp; Last Connected at : {this.state.deviceStatus}
                 <CardBody />
               </Card>
             </Col>
@@ -389,7 +410,7 @@ class Dashboard extends React.Component {
                   <div
                       id="map"
                       className="map"
-                      style={{ position: "relative", overflow: "hidden", height: "380px" , width: "600px" }}
+                      style={{ position: "relative", overflow: "hidden", height: "380px" , width: "100%" }}
                     >
                     <Map google={this.props.google} zoom={13} center={{lat: this.state.lat , lng: this.state.long}}>
                       <Marker position={{ lat: this.state.lat, lng: this.state.long}} />
