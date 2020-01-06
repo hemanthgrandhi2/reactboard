@@ -64,3 +64,7 @@ tbody {
 .chartfix{
   margin-left: 200px;
 }
+
+.card-chart1{
+  height: 100px !important;
+}

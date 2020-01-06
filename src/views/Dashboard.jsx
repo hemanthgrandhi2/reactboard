@@ -35,6 +35,13 @@ let chart1_2_options = {
     display: false
   },
 
+  
+  elements: {
+    line: {
+    tension: 0
+    }
+    },
+
   responsive: true,
   scales: {
     yAxes: [
@@ -359,7 +366,7 @@ class Dashboard extends React.Component {
         this.setState({
           temperature: a
         });
-        console.log(this.state.temperature);
+        //console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
@@ -401,9 +408,28 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         //set your data here
-        this.setState({
-          deviceStatus:"\n -- Last Connected at:" + " " + responseData[0]["DATE"] + " " + responseData[0]["TIME"]
-        });
+        let deviceDate = responseData[0]["DATE"];
+        deviceDate = deviceDate
+          .split("/")
+          .reverse()
+          .join("-");
+        deviceDate = deviceDate+ " " + responseData[0]["TIME"];
+        let today = new Date();
+        let currentDate = today.getDate() + '/'+ (today.getMonth()+1) +'/'+ today.getFullYear();
+        let currentTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        let timeDiff = today - new Date(deviceDate)
+        //console.log(timeDiff)
+        //console.log(currentDateTime - deviceDate)
+        if (timeDiff > 380000){
+          this.setState({
+            deviceStatus:"Device Disconnected -- Last Connected at:" + " " + responseData[0]["DATE"] + " " + responseData[0]["TIME"]
+          });
+        }
+        else{
+          this.setState({
+            deviceStatus:"Device Connected -- Signal Strength:" + " " + responseData[0]["SIGNAL STRENGTH"] 
+          });
+        }
       })
       .catch(error => {
         console.error(error);
@@ -418,9 +444,9 @@ class Dashboard extends React.Component {
           lat: parseFloat(responseData[0]["LONGITUDE"]),
           long: parseFloat(responseData[0]["LATTITUDE"])
         });
-        console.log(this.state.long, this.state.lat)
+        //console.log(this.state.long, this.state.lat)
         this.forceUpdate();
-        console.log(parseFloat(responseData[0]["LATTITUDE"]));
+        //console.log(parseFloat(responseData[0]["LATTITUDE"]));
       })
       .catch(error => {
         console.error(error);
@@ -432,22 +458,23 @@ class Dashboard extends React.Component {
       <>
         <div className="content">
           <Row>
-            <Col lg="4">
-              <Card className="card-chart">
+            <Col lg="3">
+              <Card className="card-chart1">
                 <CardHeader>
-                  <CardTitle tag="h2">
-                    <i className="tim-icons icon-bell-55 text-info" /> PwC Demo
+                  <CardTitle tag="h3">
+                    {/* <i className="tim-icons icon-bell-55 text-info" /> */}
+                     PwC Demo
                     Device
                   </CardTitle>
                 </CardHeader>
                 <CardBody />
               </Card>
             </Col>
-            <Col lg="4">
-              <Card className="card-chart">
+            <Col lg="3">
+              <Card className="card-chart1">
                 <CardHeader>
-                  <CardTitle tag="h2">
-                    <i className="tim-icons icon-delivery-fast text-primary" />{" "}
+                  <CardTitle tag="h3">
+                    {/* <i className="tim-icons icon-delivery-fast text-primary" />{" "} */}
                     {/*Number of Alerts: {this.state.numberOfAlerts}*/}
                     Number of Alerts: {this.state.numberOfAlerts}
                   </CardTitle>
@@ -455,18 +482,18 @@ class Dashboard extends React.Component {
                 <CardBody />
               </Card>
             </Col>
-            <Col lg="4">
-              <Card className="card-chart">
+            <Col lg="6">
+              <Card className="card-chart1">
                 <CardHeader>
                   {this.state.deviceStatus === "CONNECTED" ? (
-                    <CardTitle tag="h2">
-                      <i className="tim-icons icon-send text-success" />
+                    <CardTitle tag="h3">
+                      {/* <i className="tim-icons icon-send text-success" /> */}
                       Signal Strength : {this.state.signalStrength}
                     </CardTitle>
                   ) : (
-                    <CardTitle tag="h2">
-                      <i className="tim-icons icon-send text-success" />
-                      Device Disconnected  {this.state.deviceStatus}
+                    <CardTitle tag="h3">
+                      {/* <i className="tim-icons icon-send text-success" /> */}
+                        {this.state.deviceStatus}
                     </CardTitle>
                   )}
                 </CardHeader>
@@ -555,28 +582,7 @@ class Dashboard extends React.Component {
                             <i className="tim-icons icon-tap-02" />
                           </span>
                         </Button>
-                        <Button
-                          color="info"
-                          id="3"
-                          size="sm"
-                          tag="label"
-                          className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data4"
-                          })}
-                          onClick={() => this.setBgChartData("data4")}
-                        >
-                          <input
-                            className="d-none"
-                            name="options"
-                            type="radio"
-                          />
-                          <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Heartbeat
-                          </span>
-                          <span className="d-block d-sm-none">
-                            <i className="tim-icons icon-tap-02" />
-                          </span>
-                        </Button>
+
                       </ButtonGroup>
                     </Col>
                   </Row>
