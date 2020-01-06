@@ -21,11 +21,77 @@ import {
 } from "reactstrap";
 
 // core components
-import { chartExample1 } from "../variables/charts.jsx";
+// import { chartExample1 } from "../variables/charts.jsx";
+// import LineGraph from "../variables/linegraph";
+
+let datemax  = new Date("April 1, 2019 21:13:00");
+let datemin = new Date(datemax.getDate() - 13);
+
+
+
+let chart1_2_options = {
+  maintainAspectRatio: false,
+  legend: {
+    display: false
+  },
+
+  responsive: true,
+  scales: {
+    yAxes: [
+      {
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.0)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          suggestedMin: 0,
+          suggestedMax: 100,
+          padding: 20,
+
+          fontColor: "#9a9a9a"
+        }
+      }
+    ],
+    xAxes: [
+      {
+        type: 'time',
+        // distribution: 'linear',
+
+        time: {
+            unit : 'day',
+            displayFormats: {
+                day: 'MMM DD',
+            },
+            // max: datemax,
+            // min: datemin,
+        },
+        barPercentage: 1.6,
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.1)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          fontColor: "#9a9a9a",
+          // source: 'data',
+        }
+      }
+    ]
+  }
+};
+
+
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    
+    this.getAlerts = this.getAlerts.bind(this);
+    this.getDeviceStatus = this.getDeviceStatus.bind(this);
+    this.getTemperature = this.getTemperature.bind(this);
+    this.getSignal = this.getSignal.bind(this);
+    this.getLocation = this.getLocation.bind(this);
     this.state = {
       bigChartData: "data1",
       testdata: null,
@@ -33,23 +99,95 @@ class Dashboard extends React.Component {
       alerts: [],
       signalStrength: null,
       deviceStatus: null,
-      connectionStatus: null,
       lat: 0,
-      long: 0
+      long: 0,
+      temperature: [],
+      chartExample1 : {
+        data1: canvas => {
+          let ctx = canvas.getContext("2d");
+      
+          let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+      
+          gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+          gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+          gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+          // let td = moment('2019-04-01')
+          let date = []
+          date[0]  = new Date("April 1, 2019 21:13:00");
+           date[1] = new Date(date[0].getDate() - 1);
+          date[2] = new Date(date[0].getDate() - 2);
+
+           date[3] = new Date(date[0].getDate() - 3);
+           date[4] = new Date(date[0].getDate() - 4);
+           date[5] = new Date(date[0].getDate() - 5);
+           date[6] = new Date(date[0].getDate() - 6);
+           date[7] = new Date(date[0].getDate() - 7);
+           date[8] = new Date(date[0].getDate() - 8);
+           date[9] = new Date(date[0].getDate() - 9);
+
+      
+          return {
+          //   plugins: [{
+          //     beforeInit: function(chart) {
+          //        var time = chart.options.scales.xAxes[0].time, // 'time' object reference
+          //           // difference (in days) between min and max date
+          //           timeDiff = moment(time.max).diff(moment(time.min), 'd');
+          //        // populate 'labels' array
+          //        // (create a date string for each date between min and max, inclusive)
+          //        for (i = 0; i <= timeDiff; i++) {
+          //           var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+          //           chart.data.labels.push(_label);
+          //        }
+          //     }
+          //  }],
+
+            //  labels : [new Date("March 31, 2019"), new Date("April 1, 2019"),new Date("April 2, 2019"),new Date("April 3, 2019"),new Date("April 4, 2019")],
+            // labels : ["1","2","3","4"],
+            labels : [new Date("January 03, 2020"),
+                      new Date("January 03, 2020"),
+                    ],
+            datasets: [
+              {
+                label: "Temperature",
+                fill: true,
+                backgroundColor: gradientStroke,
+                borderColor: "#1f8ef1",
+                borderWidth: 2,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: "#1f8ef1",
+                pointBorderColor: "rgba(255,255,255,0)",
+                pointHoverBackgroundColor: "#1f8ef1",
+                pointBorderWidth: 0,
+                pointHoverRadius: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0,
+                data: this.state.temperature
+                // data : [40,3,2,1]
+              }
+            ]
+          };
+        },
+        
+        options: chart1_2_options
+      },
     };
   }
+
+  
   setBgChartData = name => {
     this.setState({
       bigChartData: name
     });
   };
   // ,{'mode': 'no-cors'}
+
   componentDidMount() {
-    this.timer = setInterval(() => this.getTemperature(), 1000);
-    this.timer = setInterval(() => this.getAlerts(), 1000);
-    this.timer = setInterval(() => this.getSignal(), 1000);
-    this.timer = setInterval(() => this.getDeviceStatus(), 1000);
-    this.timer = setInterval(() => this.getLocation(), 10000);
+    this.interval = setInterval(() => this.getTemperature(), 1000);
+    this.interval = setInterval(() => this.getAlerts(), 1000);
+    this.interval = setInterval(() => this.getSignal(), 1000);
+    this.interval = setInterval(() => this.getDeviceStatus(), 3000);
+    this.interval = setInterval(() => this.getLocation(), 5000);
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -63,6 +201,7 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         //set your data here
+
 
         let a = [];
         let i = 0;
@@ -81,7 +220,9 @@ class Dashboard extends React.Component {
             .join("-");
           let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
           let td = new Date(t2) - new Date(t1);
-          let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
+          // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
+          let td2 = new Date() - new Date(t1)
+
           if (td > 380000 && td2<1209600000) {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
@@ -118,7 +259,7 @@ class Dashboard extends React.Component {
         this.setState({
           temperature: a
         });
-        //console.log(this.state.temperature);
+        console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
@@ -160,30 +301,10 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         //set your data here
-        let x = responseData[0]["DATE"];
-        let newdate = x
-          .split("/")
-          .reverse()
-          .join("-");
-        let t1 = newdate + " " + responseData[0]["TIME"];
-        let last_time = new Date(t1)
-        let current_time = new Date();
-        let time_difference =current_time - last_time
-        if (time_difference > 18000){
-          this.setState({
-            deviceStatus: t1,
-            connectionStatus: 'DISCONNECTED'
-          });
-        }
-        else{
-          this.setState({
-            deviceStatus: t1,
-            connectionStatus: 'CONNECTED'
-          })
-        }
-        //console.log(time_difference)
-        }
-      )
+        this.setState({
+          deviceStatus: responseData
+        });
+      })
       .catch(error => {
         console.error(error);
       });
@@ -197,9 +318,9 @@ class Dashboard extends React.Component {
           lat: parseFloat(responseData[0]["LONGITUDE"]),
           long: parseFloat(responseData[0]["LATTITUDE"])
         });
-        //console.log(this.state.long, this.state.lat)
+        console.log(this.state.long, this.state.lat)
         this.forceUpdate();
-        //console.log(parseFloat(responseData[0]["LATTITUDE"]));
+        console.log(parseFloat(responseData[0]["LATTITUDE"]));
       })
       .catch(error => {
         console.error(error);
@@ -245,11 +366,10 @@ class Dashboard extends React.Component {
                   ) : (
                     <CardTitle tag="h2">
                       <i className="tim-icons icon-send text-success" />
-                      Device Status: {this.state.connectionStatus}
+                      Device Disconnected  {this.state.deviceStatus}
                     </CardTitle>
                   )}
                 </CardHeader>
-                 &nbsp; Last Connected at : {this.state.deviceStatus}
                 <CardBody />
               </Card>
             </Col>
@@ -362,10 +482,10 @@ class Dashboard extends React.Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <div className="chart-area">
+                  <div className="chart-area" style={{marginRight : '100px !important'}}>
                     <Line
-                      data={chartExample1[this.state.bigChartData]}
-                      options={chartExample1.options}
+                      data={this.state.chartExample1[this.state.bigChartData]}
+                      options={this.state.chartExample1.options}
                     />
                   </div>
                 </CardBody>
@@ -410,7 +530,7 @@ class Dashboard extends React.Component {
                   <div
                       id="map"
                       className="map"
-                      style={{ position: "relative", overflow: "hidden", height: "380px" , width: "100%" }}
+                      style={{ position: "relative", overflow: "hidden", height: "380px" , width: "600px" }}
                     >
                     <Map google={this.props.google} zoom={13} center={{lat: this.state.lat , lng: this.state.long}}>
                       <Marker position={{ lat: this.state.lat, lng: this.state.long}} />
