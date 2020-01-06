@@ -113,7 +113,7 @@ class Dashboard extends React.Component {
           gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
           // let td = moment('2019-04-01')
           let date = []
-          date[0]  = new Date("April 1, 2019 21:13:00");
+          date[0]  = new Date();
            date[1] = new Date(date[0].getDate() - 1);
           date[2] = new Date(date[0].getDate() - 2);
 
@@ -124,6 +124,7 @@ class Dashboard extends React.Component {
            date[7] = new Date(date[0].getDate() - 7);
            date[8] = new Date(date[0].getDate() - 8);
            date[9] = new Date(date[0].getDate() - 9);
+           let dateObj = new Date();
 
       
           return {
@@ -143,9 +144,108 @@ class Dashboard extends React.Component {
 
             //  labels : [new Date("March 31, 2019"), new Date("April 1, 2019"),new Date("April 2, 2019"),new Date("April 3, 2019"),new Date("April 4, 2019")],
             // labels : ["1","2","3","4"],
-            labels : [new Date("January 03, 2020"),
-                      new Date("January 03, 2020"),
+            labels : [ new Date(),
+              
+                      dateObj.setDate(dateObj.getDate() - 1) ,
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
                     ],
+            // labels : [date[0] ,
+            //   date[1],
+            //   date[2],
+            // ],
+            datasets: [
+              {
+                label: "Temperature",
+                fill: true,
+                backgroundColor: gradientStroke,
+                borderColor: "#1f8ef1",
+                borderWidth: 2,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: "#1f8ef1",
+                pointBorderColor: "rgba(255,255,255,0)",
+                pointHoverBackgroundColor: "#1f8ef1",
+                pointBorderWidth: 0,
+                pointHoverRadius: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0,
+                data: this.state.temperature
+                // data : [40,3,2,1]
+              }
+            ]
+          };
+        },
+
+        data2: canvas => {
+          let ctx = canvas.getContext("2d");
+      
+          let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+      
+          gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+          gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+          gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+          // let td = moment('2019-04-01')
+          let date = []
+          date[0]  = new Date();
+           date[1] = new Date(date[0].getDate() - 1);
+          date[2] = new Date(date[0].getDate() - 2);
+
+           date[3] = new Date(date[0].getDate() - 3);
+           date[4] = new Date(date[0].getDate() - 4);
+           date[5] = new Date(date[0].getDate() - 5);
+           date[6] = new Date(date[0].getDate() - 6);
+           date[7] = new Date(date[0].getDate() - 7);
+           date[8] = new Date(date[0].getDate() - 8);
+           date[9] = new Date(date[0].getDate() - 9);
+           let dateObj = new Date();
+
+      
+          return {
+          //   plugins: [{
+          //     beforeInit: function(chart) {
+          //        var time = chart.options.scales.xAxes[0].time, // 'time' object reference
+          //           // difference (in days) between min and max date
+          //           timeDiff = moment(time.max).diff(moment(time.min), 'd');
+          //        // populate 'labels' array
+          //        // (create a date string for each date between min and max, inclusive)
+          //        for (i = 0; i <= timeDiff; i++) {
+          //           var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+          //           chart.data.labels.push(_label);
+          //        }
+          //     }
+          //  }],
+
+            //  labels : [new Date("March 31, 2019"), new Date("April 1, 2019"),new Date("April 2, 2019"),new Date("April 3, 2019"),new Date("April 4, 2019")],
+            // labels : ["1","2","3","4"],
+            labels : [ new Date(),
+              
+                      dateObj.setDate(dateObj.getDate() - 1) ,
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                    ],
+            // labels : [date[0] ,
+            //   date[1],
+            //   date[2],
+            // ],
             datasets: [
               {
                 label: "Temperature",
@@ -186,7 +286,7 @@ class Dashboard extends React.Component {
     this.interval = setInterval(() => this.getTemperature(), 1000);
     this.interval = setInterval(() => this.getAlerts(), 1000);
     this.interval = setInterval(() => this.getSignal(), 1000);
-    this.interval = setInterval(() => this.getDeviceStatus(), 3000);
+    this.interval = setInterval(() => this.getDeviceStatus(), 1000);
     this.interval = setInterval(() => this.getLocation(), 5000);
   }
   componentWillReceiveProps(nextProps) {
@@ -302,7 +402,7 @@ class Dashboard extends React.Component {
       .then(responseData => {
         //set your data here
         this.setState({
-          deviceStatus: responseData
+          deviceStatus:"\n -- Last Connected at:" + " " + responseData[0]["DATE"] + " " + responseData[0]["TIME"]
         });
       })
       .catch(error => {

@@ -72,5 +72,3 @@ def check_device_status():
         return dumps(x)
     except e:
         return dumps({'error': str(e)})
-
-
