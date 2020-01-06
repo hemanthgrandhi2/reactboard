@@ -53,7 +53,7 @@ let chart1_2_options = {
         },
         ticks: {
           suggestedMin: 0,
-          suggestedMax: 100,
+          // suggestedMax: 100,
           padding: 20,
 
           fontColor: "#9a9a9a"
@@ -99,6 +99,8 @@ class Dashboard extends React.Component {
     this.getTemperature = this.getTemperature.bind(this);
     this.getSignal = this.getSignal.bind(this);
     this.getLocation = this.getLocation.bind(this);
+    this.getWaterLevel = this.getWaterLevel.bind(this);
+
     this.state = {
       bigChartData: "data1",
       testdata: null,
@@ -109,6 +111,7 @@ class Dashboard extends React.Component {
       lat: 0,
       long: 0,
       temperature: [],
+      waterlevel: [],
       chartExample1 : {
         data1: canvas => {
           let ctx = canvas.getContext("2d");
@@ -118,39 +121,11 @@ class Dashboard extends React.Component {
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
           gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
           gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-          // let td = moment('2019-04-01')
-          let date = []
-          date[0]  = new Date();
-           date[1] = new Date(date[0].getDate() - 1);
-          date[2] = new Date(date[0].getDate() - 2);
-
-           date[3] = new Date(date[0].getDate() - 3);
-           date[4] = new Date(date[0].getDate() - 4);
-           date[5] = new Date(date[0].getDate() - 5);
-           date[6] = new Date(date[0].getDate() - 6);
-           date[7] = new Date(date[0].getDate() - 7);
-           date[8] = new Date(date[0].getDate() - 8);
-           date[9] = new Date(date[0].getDate() - 9);
            let dateObj = new Date();
 
       
           return {
-          //   plugins: [{
-          //     beforeInit: function(chart) {
-          //        var time = chart.options.scales.xAxes[0].time, // 'time' object reference
-          //           // difference (in days) between min and max date
-          //           timeDiff = moment(time.max).diff(moment(time.min), 'd');
-          //        // populate 'labels' array
-          //        // (create a date string for each date between min and max, inclusive)
-          //        for (i = 0; i <= timeDiff; i++) {
-          //           var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
-          //           chart.data.labels.push(_label);
-          //        }
-          //     }
-          //  }],
 
-            //  labels : [new Date("March 31, 2019"), new Date("April 1, 2019"),new Date("April 2, 2019"),new Date("April 3, 2019"),new Date("April 4, 2019")],
-            // labels : ["1","2","3","4"],
             labels : [ new Date(),
               
                       dateObj.setDate(dateObj.getDate() - 1) ,
@@ -166,10 +141,7 @@ class Dashboard extends React.Component {
                       dateObj.setDate(dateObj.getDate() - 1),
                       dateObj.setDate(dateObj.getDate() - 1),
                     ],
-            // labels : [date[0] ,
-            //   date[1],
-            //   date[2],
-            // ],
+
             datasets: [
               {
                 label: "Temperature",
@@ -187,7 +159,6 @@ class Dashboard extends React.Component {
                 pointHoverBorderWidth: 0,
                 pointRadius: 0,
                 data: this.state.temperature
-                // data : [40,3,2,1]
               }
             ]
           };
@@ -218,22 +189,7 @@ class Dashboard extends React.Component {
 
       
           return {
-          //   plugins: [{
-          //     beforeInit: function(chart) {
-          //        var time = chart.options.scales.xAxes[0].time, // 'time' object reference
-          //           // difference (in days) between min and max date
-          //           timeDiff = moment(time.max).diff(moment(time.min), 'd');
-          //        // populate 'labels' array
-          //        // (create a date string for each date between min and max, inclusive)
-          //        for (i = 0; i <= timeDiff; i++) {
-          //           var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
-          //           chart.data.labels.push(_label);
-          //        }
-          //     }
-          //  }],
 
-            //  labels : [new Date("March 31, 2019"), new Date("April 1, 2019"),new Date("April 2, 2019"),new Date("April 3, 2019"),new Date("April 4, 2019")],
-            // labels : ["1","2","3","4"],
             labels : [ new Date(),
               
                       dateObj.setDate(dateObj.getDate() - 1) ,
@@ -249,13 +205,10 @@ class Dashboard extends React.Component {
                       dateObj.setDate(dateObj.getDate() - 1),
                       dateObj.setDate(dateObj.getDate() - 1),
                     ],
-            // labels : [date[0] ,
-            //   date[1],
-            //   date[2],
-            // ],
+
             datasets: [
               {
-                label: "Temperature",
+                label: "Water Level",
                 fill: true,
                 backgroundColor: gradientStroke,
                 borderColor: "#1f8ef1",
@@ -269,8 +222,7 @@ class Dashboard extends React.Component {
                 pointHoverRadius: 0,
                 pointHoverBorderWidth: 0,
                 pointRadius: 0,
-                data: this.state.temperature
-                // data : [40,3,2,1]
+                data: this.state.waterlevel,
               }
             ]
           };
@@ -291,6 +243,8 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.interval = setInterval(() => this.getTemperature(), 1000);
+    this.interval = setInterval(() => this.getWaterLevel(), 1000);
+
     this.interval = setInterval(() => this.getAlerts(), 1000);
     this.interval = setInterval(() => this.getSignal(), 1000);
     this.interval = setInterval(() => this.getDeviceStatus(), 1000);
@@ -301,6 +255,75 @@ class Dashboard extends React.Component {
       lat: nextProps.lat,
       long: nextProps.long
     });
+  }
+  async getWaterLevel() {
+    fetch("http://127.0.0.1:5000/waterlevel", { method: "GET" })
+      .then(response => response.json())
+      .then(responseData => {
+        //set your data here
+
+
+        let a = [];
+        let i = 0;
+        // newdate = date.split("/").reverse().join("-");
+        for (let index = 0; index < responseData.length - 1; index++) {
+          let x = responseData[index]["DATE"];
+          let newdate = x
+            .split("/")
+            .reverse()
+            .join("-");
+          let t1 = newdate + " " + responseData[index]["TIME"];
+          let y = responseData[index + 1]["DATE"];
+          let newdate1 = y
+            .split("/")
+            .reverse()
+            .join("-");
+          let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
+          let td = new Date(t2) - new Date(t1);
+          // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
+          let td2 = new Date() - new Date(t1)
+
+          if (td > 380000 && td2<1209600000) {
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = (responseData[index + 1]["WATER LEVEL"]==="HIGH"?1 : 0);
+              i = i + 1;
+        
+          } else if(td2<1209600000)  {
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = (responseData[index + 1]["WATER LEVEL"]==="HIGH"?1 : 0);
+              i = i + 1;
+        
+          }
+        }
+
+
+
+        this.setState({
+          waterlevel: a
+        });
+        //console.log(this.state.temperature);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   async getTemperature() {
