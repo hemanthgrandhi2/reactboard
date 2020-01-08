@@ -1,11 +1,10 @@
 import React from "react";
 import "./Dashboard.css";
-//import Map from "../components/Map";
-// nodejs library that concatenates classes
 import classNames from "classnames";
 // react plugin used to create charts
 import { Line } from "react-chartjs-2";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+//react plugin for google maps
+import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 // reactstrap components
 import {
@@ -20,22 +19,13 @@ import {
   Col
 } from "reactstrap";
 
-// core components
-// import { chartExample1 } from "../variables/charts.jsx";
-// import LineGraph from "../variables/linegraph";
-
-let datemax  = new Date("April 1, 2019 21:13:00");
-let datemin = new Date(datemax.getDate() - 13);
-
-
-
+//chart options for the chart
 let chart1_2_options = {
   maintainAspectRatio: false,
   legend: {
     display: false
   },
 
-  
   elements: {
     line: {
     tension: 0
@@ -88,18 +78,19 @@ let chart1_2_options = {
   }
 };
 
-
-
+//Dashboard component
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    
+
+    //binding the functions
     this.getAlerts = this.getAlerts.bind(this);
     this.getDeviceStatus = this.getDeviceStatus.bind(this);
     this.getTemperature = this.getTemperature.bind(this);
     this.getSignal = this.getSignal.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.getWaterLevel = this.getWaterLevel.bind(this);
+    this.getFlow = this.getFlow.bind(this)
 
     this.state = {
       bigChartData: "data1",
@@ -112,22 +103,19 @@ class Dashboard extends React.Component {
       long: 0,
       temperature: [],
       waterlevel: [],
+      flow: [],
       chartExample1 : {
+        //data for the temperature
         data1: canvas => {
           let ctx = canvas.getContext("2d");
-      
           let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-      
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
           gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
           gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-           let dateObj = new Date();
-
-      
+          let dateObj = new Date();
           return {
 
             labels : [ new Date(),
-              
                       dateObj.setDate(dateObj.getDate() - 1) ,
                       dateObj.setDate(dateObj.getDate() - 1),
                       dateObj.setDate(dateObj.getDate() - 1),
@@ -163,35 +151,28 @@ class Dashboard extends React.Component {
             ]
           };
         },
-
+        //data for the water level
         data2: canvas => {
           let ctx = canvas.getContext("2d");
-      
           let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-      
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
           gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
           gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
           // let td = moment('2019-04-01')
           let date = []
           date[0]  = new Date();
-           date[1] = new Date(date[0].getDate() - 1);
+          date[1] = new Date(date[0].getDate() - 1);
           date[2] = new Date(date[0].getDate() - 2);
-
-           date[3] = new Date(date[0].getDate() - 3);
-           date[4] = new Date(date[0].getDate() - 4);
-           date[5] = new Date(date[0].getDate() - 5);
-           date[6] = new Date(date[0].getDate() - 6);
-           date[7] = new Date(date[0].getDate() - 7);
-           date[8] = new Date(date[0].getDate() - 8);
-           date[9] = new Date(date[0].getDate() - 9);
-           let dateObj = new Date();
-
-      
+          date[3] = new Date(date[0].getDate() - 3);
+          date[4] = new Date(date[0].getDate() - 4);
+          date[5] = new Date(date[0].getDate() - 5);
+          date[6] = new Date(date[0].getDate() - 6);
+          date[7] = new Date(date[0].getDate() - 7);
+          date[8] = new Date(date[0].getDate() - 8);
+          date[9] = new Date(date[0].getDate() - 9);
+          let dateObj = new Date();
           return {
-
             labels : [ new Date(),
-              
                       dateObj.setDate(dateObj.getDate() - 1) ,
                       dateObj.setDate(dateObj.getDate() - 1),
                       dateObj.setDate(dateObj.getDate() - 1),
@@ -227,13 +208,69 @@ class Dashboard extends React.Component {
             ]
           };
         },
-        
+        //data for the flow pulse
+        data3: canvas => {
+          let ctx = canvas.getContext("2d");
+          let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+          gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+          gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+          gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+          // let td = moment('2019-04-01')
+          let date = []
+          date[0]  = new Date();
+          date[1] = new Date(date[0].getDate() - 1);
+          date[2] = new Date(date[0].getDate() - 2);
+          date[3] = new Date(date[0].getDate() - 3);
+          date[4] = new Date(date[0].getDate() - 4);
+          date[5] = new Date(date[0].getDate() - 5);
+          date[6] = new Date(date[0].getDate() - 6);
+          date[7] = new Date(date[0].getDate() - 7);
+          date[8] = new Date(date[0].getDate() - 8);
+          date[9] = new Date(date[0].getDate() - 9);
+          let dateObj = new Date();
+          return {
+            labels : [ new Date(),
+                      dateObj.setDate(dateObj.getDate() - 1) ,
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getDate() - 1),
+                    ],
+
+            datasets: [
+              {
+                label: "flow pulse",
+                fill: true,
+                backgroundColor: gradientStroke,
+                borderColor: "#1f8ef1",
+                borderWidth: 2,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: "#1f8ef1",
+                pointBorderColor: "rgba(255,255,255,0)",
+                pointHoverBackgroundColor: "#1f8ef1",
+                pointBorderWidth: 0,
+                pointHoverRadius: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0,
+                data: this.state.flow,
+              }
+            ]
+          };
+        },
         options: chart1_2_options
       },
     };
   }
 
-  
+  //setting the chart data to the state
   setBgChartData = name => {
     this.setState({
       bigChartData: name
@@ -242,9 +279,10 @@ class Dashboard extends React.Component {
   // ,{'mode': 'no-cors'}
 
   componentDidMount() {
+    //setting intervals for each API request
     this.interval = setInterval(() => this.getTemperature(), 1000);
     this.interval = setInterval(() => this.getWaterLevel(), 1000);
-
+    this.interval = setInterval(() => this.getFlow(), 1000);
     this.interval = setInterval(() => this.getAlerts(), 1000);
     this.interval = setInterval(() => this.getSignal(), 1000);
     this.interval = setInterval(() => this.getDeviceStatus(), 1000);
@@ -256,18 +294,17 @@ class Dashboard extends React.Component {
       long: nextProps.long
     });
   }
+
+  //fetches water level data from the API and sets state
   async getWaterLevel() {
     fetch("http://127.0.0.1:5000/waterlevel", { method: "GET" })
       .then(response => response.json())
       .then(responseData => {
-        //set your data here
-
-
         let a = [];
         let i = 0;
-        // newdate = date.split("/").reverse().join("-");
         for (let index = 0; index < responseData.length - 1; index++) {
           let x = responseData[index]["DATE"];
+          //converting recieved data into UTC format to find difference
           let newdate = x
             .split("/")
             .reverse()
@@ -283,6 +320,7 @@ class Dashboard extends React.Component {
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1)
 
+          //if time within 5 minutes and 2 weeks, then display data item
           if (td > 380000 && td2<1209600000) {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
@@ -313,9 +351,6 @@ class Dashboard extends React.Component {
         
           }
         }
-
-
-
         this.setState({
           waterlevel: a
         });
@@ -326,13 +361,11 @@ class Dashboard extends React.Component {
       });
   }
 
+  //get temperature
   async getTemperature() {
     fetch("http://127.0.0.1:5000/temperature", { method: "GET" })
       .then(response => response.json())
       .then(responseData => {
-        //set your data here
-
-
         let a = [];
         let i = 0;
         // newdate = date.split("/").reverse().join("-");
@@ -383,9 +416,6 @@ class Dashboard extends React.Component {
         
           }
         }
-
-
-
         this.setState({
           temperature: a
         });
@@ -396,6 +426,72 @@ class Dashboard extends React.Component {
       });
   }
 
+  //get the flow pulse
+  async getFlow() {
+    fetch("http://127.0.0.1:5000/flowpulse", { method: "GET" })
+      .then(response => response.json())
+      .then(responseData => {
+        let a = [];
+        let i = 0;
+        // newdate = date.split("/").reverse().join("-");
+        for (let index = 0; index < responseData.length - 1; index++) {
+          let x = responseData[index]["DATE"];
+          let newdate = x
+            .split("/")
+            .reverse()
+            .join("-");
+          let t1 = newdate + " " + responseData[index]["TIME"];
+          let y = responseData[index + 1]["DATE"];
+          let newdate1 = y
+            .split("/")
+            .reverse()
+            .join("-");
+          let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
+          let td = new Date(t2) - new Date(t1);
+          // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
+          let td2 = new Date() - new Date(t1)
+
+          if (td > 1000 && td2<7200000) {
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = responseData[index]["FLOW PULSE"];
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
+              i = i + 1;
+        
+          } else if(td2<1209600000)  {
+            a[i] = {};
+            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["y"] = responseData[index]["FLOW PULSE"];
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
+              i = i + 1;
+        
+          }
+        }
+        this.setState({
+          flow: a
+        });
+        //console.log(this.state.temperature);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  //get number of alerts
   async getAlerts() {
     fetch("http://127.0.0.1:5000/error", { method: "GET" })
       .then(response => response.json())
@@ -412,6 +508,7 @@ class Dashboard extends React.Component {
       });
   }
 
+  //get signal strength
   async getSignal() {
     fetch("http://127.0.0.1:5000/sigstrength", { method: "GET" })
       .then(response => response.json())
@@ -426,6 +523,7 @@ class Dashboard extends React.Component {
       });
   }
 
+  //displays device status and last connected
   async getDeviceStatus() {
     fetch("http://127.0.0.1:5000/checkdev", { method: "GET" })
       .then(response => response.json())
@@ -438,11 +536,8 @@ class Dashboard extends React.Component {
           .join("-");
         deviceDate = deviceDate+ " " + responseData[0]["TIME"];
         let today = new Date();
-        let currentDate = today.getDate() + '/'+ (today.getMonth()+1) +'/'+ today.getFullYear();
-        let currentTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         let timeDiff = today - new Date(deviceDate)
-        //console.log(timeDiff)
-        //console.log(currentDateTime - deviceDate)
+        //if device has been inactive for more than 5mins, then say device is disconnected and show last connected
         if (timeDiff > 380000){
           this.setState({
             deviceStatus:"Device Disconnected -- Last Connected at:" + " " + responseData[0]["DATE"] + " " + responseData[0]["TIME"]
@@ -458,6 +553,8 @@ class Dashboard extends React.Component {
         console.error(error);
       });
   }
+
+  //get location data
   async getLocation() {
     fetch("http://127.0.0.1:5000/latlong", { method: "GET" })
       .then(response => response.json())
@@ -469,7 +566,6 @@ class Dashboard extends React.Component {
         });
         //console.log(this.state.long, this.state.lat)
         this.forceUpdate();
-        //console.log(parseFloat(responseData[0]["LATTITUDE"]));
       })
       .catch(error => {
         console.error(error);
@@ -498,7 +594,6 @@ class Dashboard extends React.Component {
                 <CardHeader>
                   <CardTitle tag="h3">
                     {/* <i className="tim-icons icon-delivery-fast text-primary" />{" "} */}
-                    {/*Number of Alerts: {this.state.numberOfAlerts}*/}
                     Number of Alerts: {this.state.numberOfAlerts}
                   </CardTitle>
                 </CardHeader>
@@ -605,7 +700,6 @@ class Dashboard extends React.Component {
                             <i className="tim-icons icon-tap-02" />
                           </span>
                         </Button>
-
                       </ButtonGroup>
                     </Col>
                   </Row>
@@ -638,7 +732,6 @@ class Dashboard extends React.Component {
                     </thead>
                     <tbody className="tablebody">
                       {this.state.alerts.map(item =>
-                        //  console.log(item["DATE"] + item["TIME"])
                         <tr>
                           <td class="time">{item["DATE"] + " " + item["TIME"]}</td>
                           <td class="value">Temperature Sensor Not Working</td>
