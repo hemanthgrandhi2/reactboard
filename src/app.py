@@ -36,7 +36,7 @@ def water_level():
 @app.route("/flowpulse", methods = ['GET'])
 def flow_pulse():
     try:
-        x = mycol.find({"FLOW PULSE":{"$exists": "true"}}, {"FLOW PULSE": 1,"DATE": 1, "TIME" : 1})
+        x = mycol.find({"FLOW PULSE":{"$exists": True},"IMSI NUMBER":{"$exists": False},"TEMPERATURE":{"$exists": False}}, {"FLOW PULSE": 1,"DATE": 1, "TIME" : 1})
         return dumps(x)
     except e:
         return dumps({'error': str(e)})
@@ -52,7 +52,7 @@ def error_code():
 @app.route("/latlong", methods = ['GET'])
 def latitude_longitude():
     try:
-        x = mycol.find({"LATTITUDE":{"$exists": "true"}, "LONGITUDE": {"$exists": "true"}}, {"LATTITUDE": 1,"LONGITUDE": 1, "DATE": 1, "TIME" : 1}).sort([("DATE", -1), ("TIME", -1)]).limit(1)
+        x = mycol.find({"LATTITUDE":{"$exists": "true"}, "LONGITUDE": {"$exists": "true"},"IMSI NUMBER":{"$exists": "true"}}, {"LATTITUDE": 1,"LONGITUDE": 1, "DATE": 1, "TIME" : 1}).sort([{"_id",-1}]).limit(1)
         return dumps(x)
     except e:
         return dumps({'error': str(e)})
@@ -60,7 +60,7 @@ def latitude_longitude():
 @app.route("/sigstrength", methods = ['GET'])
 def signal():
     try:
-        x = mycol.find({"SIGNAL STRENGTH":{"$exists": "true"}}, {"SIGNAL STRENGTH": 1, "DATE": 1, "TIME" : 1}).sort([("DATE", -1), ("TIME", -1)]).limit(1)
+        x = mycol.find({"SIGNAL STRENGTH":{"$exists": "true"}}, {"SIGNAL STRENGTH": 1, "DATE": 1, "TIME" : 1}).sort([{"_id",-1}]).limit(1)
         return dumps(x)
     except e:
         return dumps({'error': str(e)})

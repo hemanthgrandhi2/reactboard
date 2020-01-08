@@ -22,6 +22,9 @@ import {
 //chart options for the chart
 let chart1_2_options = {
   maintainAspectRatio: false,
+  tooltips: {
+    enabled: false
+},
   legend: {
     display: false
   },
@@ -59,6 +62,67 @@ let chart1_2_options = {
             unit : 'day',
             displayFormats: {
                 day: 'MMM DD',
+            },
+            // max: datemax,
+            // min: datemin,
+        },
+        barPercentage: 1.6,
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.1)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          fontColor: "#9a9a9a",
+          // source: 'data',
+        }
+      }
+    ]
+  }
+};
+
+let chart3_options = {
+  maintainAspectRatio: false,
+  tooltips: {
+    enabled: false
+},
+  legend: {
+    display: false
+  },
+
+  elements: {
+    line: {
+    tension: 0
+    }
+    },
+
+  responsive: true,
+  scales: {
+    yAxes: [
+      {
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.0)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          suggestedMin: 0,
+          // suggestedMax: 100,
+          padding: 20,
+
+          fontColor: "#9a9a9a"
+        }
+      }
+    ],
+    xAxes: [
+      {
+        type: 'time',
+        // distribution: 'linear',
+
+        time: {
+            unit : 'second',
+            displayFormats: {
+                second: 'hh:mm:ss a',
             },
             // max: datemax,
             // min: datemin,
@@ -148,7 +212,7 @@ class Dashboard extends React.Component {
                 pointRadius: 0,
                 data: this.state.temperature
               }
-            ]
+            ],
           };
         },
         //data for the water level
@@ -158,18 +222,7 @@ class Dashboard extends React.Component {
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
           gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
           gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-          // let td = moment('2019-04-01')
-          let date = []
-          date[0]  = new Date();
-          date[1] = new Date(date[0].getDate() - 1);
-          date[2] = new Date(date[0].getDate() - 2);
-          date[3] = new Date(date[0].getDate() - 3);
-          date[4] = new Date(date[0].getDate() - 4);
-          date[5] = new Date(date[0].getDate() - 5);
-          date[6] = new Date(date[0].getDate() - 6);
-          date[7] = new Date(date[0].getDate() - 7);
-          date[8] = new Date(date[0].getDate() - 8);
-          date[9] = new Date(date[0].getDate() - 9);
+
           let dateObj = new Date();
           return {
             labels : [ new Date(),
@@ -205,7 +258,8 @@ class Dashboard extends React.Component {
                 pointRadius: 0,
                 data: this.state.waterlevel,
               }
-            ]
+            ],
+
           };
         },
         //data for the flow pulse
@@ -222,26 +276,26 @@ class Dashboard extends React.Component {
           date[2] = new Date(date[0].getDate() - 2);
           date[3] = new Date(date[0].getDate() - 3);
           date[4] = new Date(date[0].getDate() - 4);
-          date[5] = new Date(date[0].getDate() - 5);
-          date[6] = new Date(date[0].getDate() - 6);
-          date[7] = new Date(date[0].getDate() - 7);
-          date[8] = new Date(date[0].getDate() - 8);
-          date[9] = new Date(date[0].getDate() - 9);
+          // date[5] = new Date(date[0].getDate() - 5);
+          // date[6] = new Date(date[0].getDate() - 6);
+          // date[7] = new Date(date[0].getDate() - 7);
+          // date[8] = new Date(date[0].getDate() - 8);
+          // date[9] = new Date(date[0].getDate() - 9);
           let dateObj = new Date();
           return {
             labels : [ new Date(),
-                      dateObj.setDate(dateObj.getDate() - 1) ,
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
+                      dateObj.setDate(dateObj.getMinutes() - 1),
+                      // dateObj.setDate(dateObj.getMinutes() - 1),
+                      // dateObj.setDate(dateObj.getMinutes() - 1),
+                      // dateObj.setDate(dateObj.getMinutes() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
                     ],
 
             datasets: [
@@ -266,6 +320,67 @@ class Dashboard extends React.Component {
           };
         },
         options: chart1_2_options
+      },
+      chartExample2 : {
+        //data for the flow pulse
+        data3: canvas => {
+          let ctx = canvas.getContext("2d");
+          let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+          gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+          gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+          gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+          // let td = moment('2019-04-01')
+          let date = []
+          date[0]  = new Date();
+          date[1] = new Date(date[0].getMinutes() - 1);
+          date[2] = new Date(date[0].getMinutes() - 2);
+          date[3] = new Date(date[0].getMinutes() - 3);
+          date[4] = new Date(date[0].getMinutes() - 4);
+          // date[5] = new Date(date[0].getDate() - 5);
+          // date[6] = new Date(date[0].getDate() - 6);
+          // date[7] = new Date(date[0].getDate() - 7);
+          // date[8] = new Date(date[0].getDate() - 8);
+          // date[9] = new Date(date[0].getDate() - 9);
+          let dateObj = new Date();
+          return {
+            labels : [dateObj.setMinutes(dateObj.getMinutes() - 0),
+                      dateObj.setMinutes(dateObj.getMinutes() - 1),
+                      dateObj.setMinutes(dateObj.getMinutes() - 1),
+                      // dateObj.setMinutes(dateObj.getMinutes() - 1),
+                      // dateObj.setMinutes(dateObj.getMinutes() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                      // dateObj.setDate(dateObj.getDate() - 1),
+                    ],
+
+            datasets: [
+              {
+                label: "flow pulse",
+                fill: true,
+                backgroundColor: gradientStroke,
+                borderColor: "#1f8ef1",
+                borderWidth: 2,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: "#1f8ef1",
+                pointBorderColor: "rgba(255,255,255,0)",
+                pointHoverBackgroundColor: "#1f8ef1",
+                pointBorderWidth: 0,
+                pointHoverRadius: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0,
+                // data: this.state.flow,
+                data : []
+              }
+            ]
+          };
+        },
+        options: chart3_options
       },
     };
   }
@@ -451,25 +566,10 @@ class Dashboard extends React.Component {
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1)
 
-          if (td > 1000 && td2<7200000) {
-            a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = responseData[index]["FLOW PULSE"];
-            i = i + 1;
+          if ( td2<120000) {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
-              i = i + 1;
-        
-          } else if(td2<1209600000)  {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             a[i]["y"] = responseData[index]["FLOW PULSE"];
@@ -479,7 +579,7 @@ class Dashboard extends React.Component {
             a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
               i = i + 1;
         
-          }
+          } 
         }
         this.setState({
           flow: a
@@ -706,10 +806,29 @@ class Dashboard extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="chart-area" style={{marginRight : '100px !important'}}>
+                    {console.log(this.state.bigChartData ==="data1" || this.state.bigChartData ==="data2")}
+                    {this.state.bigChartData ==="data1" ||this.state.bigChartData === "data2"?
+                                      <Line
+                                      data={this.state.chartExample1[this.state.bigChartData]}
+                                      options={this.state.chartExample1.options}
+                
+                                      // options={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1.options:this.state.chartExample2.options)}
+                                    />  
+                    :
+
                     <Line
-                      data={this.state.chartExample1[this.state.bigChartData]}
-                      options={this.state.chartExample1.options}
-                    />
+                    data={this.state.chartExample2[this.state.bigChartData]}
+                    options={this.state.chartExample2.options}
+
+                    // options={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1.options:this.state.chartExample2.options)}
+                  />  
+                  }
+                    {/* // <Line
+                    //   data={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1[this.state.bigChartData] : this.state.chartExample2[this.state.bigChartData])}
+                    //   // options={this.chart1_2_options}
+
+                    //   options={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1.options:this.state.chartExample2.options)}
+                    // /> */}
                   </div>
                 </CardBody>
               </Card>

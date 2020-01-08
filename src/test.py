@@ -14,6 +14,7 @@ def on_connect(mosq, obj, rc):
     print("rc: " + str(rc))
     # print("" )
 
+
 def on_message(mosq, obj, msg):
     # print ("on_message:: this means  I got a message from brokerfor this topic")
     # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
