@@ -564,20 +564,36 @@ class Dashboard extends React.Component {
           let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
           let td = new Date(t2) - new Date(t1);
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
-          let td2 = new Date() - new Date(t1)
+          let td2 = new Date("January 8, 2020 12:03:20") - new Date(t1);
 
-          if ( td2<120000) {
+          // let td2 = new Date() - new Date(t1)
+
+          if ( td2<1200000) {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = 0;
+            a[i]["y"] = 0
+            i = i + 1;
             a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            a[i]["x"] = "newtime"
             a[i]["y"] = responseData[index]["FLOW PULSE"];
             i = i + 1;
             a[i] = {};
+            a[i]["x"] = "newtime"
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
             a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            a[i]["y"] = 0;
+            i = i + 1;
+            a[i] = {};
+            a[i]["x"] = "newtime2";
             a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
               i = i + 1;
+              a[i] = {};
+              a[i]["x"] = "newtime2";
+              a[i]["y"] = 0;
+                i = i + 1;
+
         
           } 
         }
