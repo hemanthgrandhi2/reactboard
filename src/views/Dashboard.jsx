@@ -476,7 +476,7 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         let a = [];
-        let i = 0;~
+        let i = 0;
         // newdate = date.split("/").reverse().join("-");
         for (let index = 0; index < responseData.length - 1; index++) {
           let x = responseData[index]["DATE"];
