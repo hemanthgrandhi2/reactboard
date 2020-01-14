@@ -57,15 +57,14 @@ let chart1_2_options = {
       {
         type: 'time',
         // distribution: 'linear',
-
         time: {
-            unit : 'day',
-            displayFormats: {
-                day: 'MMM DD',
-            },
-            // max: datemax,
-            // min: datemin,
-        },
+          unit : 'second',
+          displayFormats: {
+              second: 'hh:mm:ss a',
+          },
+          // max: datemax,
+          // min: datemin,
+      },
         barPercentage: 1.6,
         gridLines: {
           drawBorder: false,
@@ -179,19 +178,22 @@ class Dashboard extends React.Component {
           let dateObj = new Date();
           return {
 
-            labels : [ new Date(),
-                      dateObj.setDate(dateObj.getDate() - 1) ,
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
+            labels : [ dateObj.setMinutes(dateObj.getMinutes() - 0),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+
                     ],
 
             datasets: [
@@ -211,6 +213,7 @@ class Dashboard extends React.Component {
                 pointHoverBorderWidth: 0,
                 pointRadius: 0,
                 data: this.state.temperature
+                // data: [],
               }
             ],
           };
@@ -225,19 +228,9 @@ class Dashboard extends React.Component {
 
           let dateObj = new Date();
           return {
-            labels : [ new Date(),
-                      dateObj.setDate(dateObj.getDate() - 1) ,
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
-                      dateObj.setDate(dateObj.getDate() - 1),
+            labels : [ dateObj.setMinutes(dateObj.getMinutes() - 0),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
+              dateObj.setMinutes(dateObj.getMinutes() - 1),
                     ],
 
             datasets: [
@@ -374,8 +367,8 @@ class Dashboard extends React.Component {
                 pointHoverRadius: 0,
                 pointHoverBorderWidth: 0,
                 pointRadius: 0,
-                // data: this.state.flow,
-                data : []
+                data: this.state.flow,
+                // data : []
               }
             ]
           };
@@ -436,25 +429,26 @@ class Dashboard extends React.Component {
           let td2 = new Date() - new Date(t1)
 
           //if time within 5 minutes and 2 weeks, then display data item
-          if (td > 380000 && td2<1209600000) {
-            a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = (responseData[index + 1]["WATER LEVEL"]==="HIGH"?1 : 0);
-              i = i + 1;
+          // if (td > 380000 && td2<1209600000) {
+          //   a[i] = {};
+          //   a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+          //   a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+          //   a[i]["y"] = 0;
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+          //   a[i]["y"] = 0;
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+          //   a[i]["y"] = (responseData[index + 1]["WATER LEVEL"]==="HIGH"?1 : 0);
+          //     i = i + 1;
         
-          } else if(td2<1209600000)  {
+          // }
+          if(td2<120000)  {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);;
@@ -482,7 +476,7 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         let a = [];
-        let i = 0;
+        let i = 0;~
         // newdate = date.split("/").reverse().join("-");
         for (let index = 0; index < responseData.length - 1; index++) {
           let x = responseData[index]["DATE"];
@@ -501,25 +495,28 @@ class Dashboard extends React.Component {
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1)
 
-          if (td > 380000 && td2<1209600000) {
-            a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = responseData[index]["TEMPERATURE"];
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = responseData[index + 1]["TEMPERATURE"];
-              i = i + 1;
+          // if (td > 380000 && td2<1209600000) {
+          //   a[i] = {};
+          //   a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+          //   a[i]["y"] = responseData[index]["TEMPERATURE"];
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+          //   a[i]["y"] = 0;
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+          //   a[i]["y"] = 0;
+          //   i = i + 1;
+          //   a[i] = {};
+          //   a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+          //   a[i]["y"] = responseData[index + 1]["TEMPERATURE"];
+          //     i = i + 1;
         
-          } else if(td2<1209600000)  {
+          // } 
+          console.log(t1)
+          console.log(td2)
+          if(td2<600000)  {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             a[i]["y"] = responseData[index]["TEMPERATURE"];
@@ -534,7 +531,7 @@ class Dashboard extends React.Component {
         this.setState({
           temperature: a
         });
-        //console.log(this.state.temperature);
+        console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
@@ -564,35 +561,48 @@ class Dashboard extends React.Component {
           let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
           let td = new Date(t2) - new Date(t1);
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
-          let td2 = new Date("January 8, 2020 12:03:20") - new Date(t1);
+          let td2 = new Date() - new Date(t1);
 
           // let td2 = new Date() - new Date(t1)
 
           if ( td2<1200000) {
+            // a[i] = {};
+            // a[i]["x"] = newdate + " " + responseData[index]["TIME"];
+            // a[i]["y"] = 0
+            // i = i + 1;
+            // a[i] = {};
+            // let time1 = new Date(t1)
+            // let timediff1 = parseFloat(responseData[index]["FLOW PULSE"]) *2;
+            // a[i]["x"] = time1.setSeconds(time1.getSeconds + timediff1)
+            // a[i]["y"] = responseData[index]["FLOW PULSE"];
+            // i = i + 1;
+            // a[i] = {};
+            // a[i]["x"] = time1.setSeconds(time1.getSeconds + timediff1)
+            // a[i]["y"] = 0;
+            // i = i + 1;
+            // a[i] = {};
+            // a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
+            // a[i]["y"] = 0;
+            // i = i + 1;
+            // a[i] = {};
+            // let time2 = new Date(t2)
+            // let timediff2 = parseFloat(responseData[index +1]["FLOW PULSE"]) *2;
+            // a[i]["x"] = time2.setSeconds(time2.getSeconds + timediff2);
+            // a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
+            //   i = i + 1;
+            //   a[i] = {};
+            //   a[i]["x"] = time2.setSeconds(time2.getSeconds + timediff2);
+            //   a[i]["y"] = 0;
+            //     i = i + 1;
+
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = 0
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = "newtime"
             a[i]["y"] = responseData[index]["FLOW PULSE"];
             i = i + 1;
             a[i] = {};
-            a[i]["x"] = "newtime"
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
             a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = 0;
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = "newtime2";
             a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
               i = i + 1;
-              a[i] = {};
-              a[i]["x"] = "newtime2";
-              a[i]["y"] = 0;
-                i = i + 1;
 
         
           } 
@@ -822,7 +832,7 @@ class Dashboard extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="chart-area" style={{marginRight : '100px !important'}}>
-                    {console.log(this.state.bigChartData ==="data1" || this.state.bigChartData ==="data2")}
+                    {/* {console.log(this.state.bigChartData ==="data1" || this.state.bigChartData ==="data2")} */}
                     {this.state.bigChartData ==="data1" ||this.state.bigChartData === "data2"?
                                       <Line
                                       data={this.state.chartExample1[this.state.bigChartData]}
