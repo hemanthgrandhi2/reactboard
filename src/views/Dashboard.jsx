@@ -20,7 +20,7 @@ import {
 } from "reactstrap";
 
 //chart options for the chart
-let chart1_2_options = {
+let chart0_options = {
   maintainAspectRatio: false,
   tooltips: {
     enabled: false
@@ -80,7 +80,68 @@ let chart1_2_options = {
   }
 };
 
-let chart3_options = {
+let chart1_options = {
+  maintainAspectRatio: false,
+  tooltips: {
+    enabled: false
+},
+  legend: {
+    display: false
+  },
+
+  elements: {
+    line: {
+    tension: 0
+    }
+    },
+    animation: false,
+
+  responsive: true,
+  scales: {
+    yAxes: [
+      {
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.0)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          suggestedMin: 0,
+          // suggestedMax: 100,
+          padding: 20,
+
+          fontColor: "#9a9a9a"
+        }
+      }
+    ],
+    xAxes: [
+      {
+        type: 'time',
+        // distribution: 'linear',
+        time: {
+          unit : 'second',
+          displayFormats: {
+              second: 'hh:mm:ss a',
+          },
+          // max: datemax,
+          // min: datemin,
+      },
+        barPercentage: 1.6,
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.1)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          fontColor: "#9a9a9a",
+          // source: 'data',
+        }
+      }
+    ]
+  }
+};
+
+let chart2_options = {
   maintainAspectRatio: false,
   tooltips: {
     enabled: false
@@ -156,7 +217,7 @@ class Dashboard extends React.Component {
     this.getFlow = this.getFlow.bind(this)
 
     this.state = {
-      bigChartData: "data1",
+      bigChartData: 0,
       testdata: null,
       numberOfAlerts: null,
       alerts: [],
@@ -167,9 +228,9 @@ class Dashboard extends React.Component {
       temperature: [],
       waterlevel: [],
       flow: [],
-      chartExample1 : {
+      chartExample1 : [{
         //data for the temperature
-        data1: canvas => {
+        0: canvas => {
           let ctx = canvas.getContext("2d");
           let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
@@ -219,7 +280,12 @@ class Dashboard extends React.Component {
           };
         },
         //data for the water level
-        data2: canvas => {
+
+        options: chart0_options
+      },
+      {
+        
+        1: canvas => {
           let ctx = canvas.getContext("2d");
           let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
@@ -248,75 +314,19 @@ class Dashboard extends React.Component {
                 pointBorderWidth: 0,
                 pointHoverRadius: 0,
                 pointHoverBorderWidth: 0,
-                pointRadius: 0,
+                pointRadius: 5,
                 data: this.state.waterlevel,
+                showLine: false,
               }
             ],
 
           };
         },
-        //data for the flow pulse
-        data3: canvas => {
-          let ctx = canvas.getContext("2d");
-          let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-          gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-          gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-          gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-          // let td = moment('2019-04-01')
-          let date = []
-          date[0]  = new Date();
-          date[1] = new Date(date[0].getDate() - 1);
-          date[2] = new Date(date[0].getDate() - 2);
-          date[3] = new Date(date[0].getDate() - 3);
-          date[4] = new Date(date[0].getDate() - 4);
-          // date[5] = new Date(date[0].getDate() - 5);
-          // date[6] = new Date(date[0].getDate() - 6);
-          // date[7] = new Date(date[0].getDate() - 7);
-          // date[8] = new Date(date[0].getDate() - 8);
-          // date[9] = new Date(date[0].getDate() - 9);
-          let dateObj = new Date();
-          return {
-            labels : [ new Date(),
-                      dateObj.setDate(dateObj.getMinutes() - 1),
-                      // dateObj.setDate(dateObj.getMinutes() - 1),
-                      // dateObj.setDate(dateObj.getMinutes() - 1),
-                      // dateObj.setDate(dateObj.getMinutes() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                      // dateObj.setDate(dateObj.getDate() - 1),
-                    ],
-
-            datasets: [
-              {
-                label: "flow pulse",
-                fill: true,
-                backgroundColor: gradientStroke,
-                borderColor: "#1f8ef1",
-                borderWidth: 2,
-                borderDash: [],
-                borderDashOffset: 0.0,
-                pointBackgroundColor: "#1f8ef1",
-                pointBorderColor: "rgba(255,255,255,0)",
-                pointHoverBackgroundColor: "#1f8ef1",
-                pointBorderWidth: 0,
-                pointHoverRadius: 0,
-                pointHoverBorderWidth: 0,
-                pointRadius: 0,
-                data: this.state.flow,
-              }
-            ]
-          };
-        },
-        options: chart1_2_options
+        options: chart1_options
       },
-      chartExample2 : {
+      {
         //data for the flow pulse
-        data3: canvas => {
+        2: canvas => {
           let ctx = canvas.getContext("2d");
           let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
           gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
@@ -373,8 +383,10 @@ class Dashboard extends React.Component {
             ]
           };
         },
-        options: chart3_options
+        options: chart2_options
       },
+    ],
+      
     };
   }
 
@@ -514,8 +526,8 @@ class Dashboard extends React.Component {
           //     i = i + 1;
         
           // } 
-          console.log(t1)
-          console.log(td2)
+          // console.log(t1)
+          // console.log(td2)
           if(td2<600000)  {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
@@ -543,9 +555,14 @@ class Dashboard extends React.Component {
     fetch("http://127.0.0.1:5000/flowpulse", { method: "GET" })
       .then(response => response.json())
       .then(responseData => {
+        let arr = responseData.map(obj=> ({ ...obj, datetime: obj["DATE"] + " "+ obj["TIME"] }))
+        let uniq = {}
+        responseData = arr.filter(obj => !uniq[obj.datetime] && (uniq[obj.datetime] = true));
         let a = [];
         let i = 0;
         // newdate = date.split("/").reverse().join("-");
+        let cummulative_counter = 0;
+
         for (let index = 0; index < responseData.length - 1; index++) {
           let x = responseData[index]["DATE"];
           let newdate = x
@@ -562,10 +579,17 @@ class Dashboard extends React.Component {
           let td = new Date(t2) - new Date(t1);
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1);
+          let dateNow = new Date()
+
+          let timeDiffFromMidnight = new Date(t1) - dateNow.setHours(0,0,0,0)
 
           // let td2 = new Date() - new Date(t1)
 
-          if ( td2<1200000) {
+          if (timeDiffFromMidnight>0 && td2>=120000){
+            cummulative_counter = cummulative_counter + parseFloat(responseData[index]["FLOW PULSE"])
+
+          }
+          if ( td2<120000) {
             // a[i] = {};
             // a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             // a[i]["y"] = 0
@@ -594,14 +618,15 @@ class Dashboard extends React.Component {
             //   a[i]["x"] = time2.setSeconds(time2.getSeconds + timediff2);
             //   a[i]["y"] = 0;
             //     i = i + 1;
-
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = responseData[index]["FLOW PULSE"];
+            cummulative_counter = cummulative_counter + parseFloat(responseData[index]["FLOW PULSE"])
+            a[i]["y"] = cummulative_counter
             i = i + 1;
             a[i] = {};
             a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
+            cummulative_counter = cummulative_counter + parseFloat(responseData[index + 1]["FLOW PULSE"])
+            a[i]["y"] = cummulative_counter
               i = i + 1;
 
         
@@ -622,7 +647,13 @@ class Dashboard extends React.Component {
     fetch("http://127.0.0.1:5000/error", { method: "GET" })
       .then(response => response.json())
       .then(responseData => {
+        let arr = responseData.map(obj=> ({ ...obj, datetime: obj["DATE"] + " "+ obj["TIME"] }))
+        let uniq = {}
+        // let arrFiltered = arr.filter(obj => !uniq[obj.datetime] && (uniq[obj.datetime] = true));
+        responseData = arr.filter(obj => !uniq[obj.datetime] && (uniq[obj.datetime] = true));
+
         //set your data here
+        // console.log(responseData)
         let numberOfAlerts = responseData.length;
         this.setState({
           numberOfAlerts: numberOfAlerts,
@@ -762,12 +793,12 @@ class Dashboard extends React.Component {
                         <Button
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data1"
+                            active: this.state.bigChartData === 0
                           })}
                           color="info"
                           id="0"
                           size="sm"
-                          onClick={() => this.setBgChartData("data1")}
+                          onClick={() => this.setBgChartData(0)}
                         >
                           <input
                             defaultChecked
@@ -788,9 +819,9 @@ class Dashboard extends React.Component {
                           size="sm"
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data2"
+                            active: this.state.bigChartData === 1
                           })}
-                          onClick={() => this.setBgChartData("data2")}
+                          onClick={() => this.setBgChartData(1)}
                         >
                           <input
                             className="d-none"
@@ -810,9 +841,10 @@ class Dashboard extends React.Component {
                           size="sm"
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data3"
+                            active: this.state.bigChartData === 2
+
                           })}
-                          onClick={() => this.setBgChartData("data3")}
+                          onClick={() => this.setBgChartData(2)}
                         >
                           <input
                             className="d-none"
@@ -833,22 +865,21 @@ class Dashboard extends React.Component {
                 <CardBody>
                   <div className="chart-area" style={{marginRight : '100px !important'}}>
                     {/* {console.log(this.state.bigChartData ==="data1" || this.state.bigChartData ==="data2")} */}
-                    {this.state.bigChartData ==="data1" ||this.state.bigChartData === "data2"?
                                       <Line
-                                      data={this.state.chartExample1[this.state.bigChartData]}
-                                      options={this.state.chartExample1.options}
+                                      data={this.state.chartExample1[this.state.bigChartData][this.state.bigChartData]}
+                                      options={this.state.chartExample1[this.state.bigChartData].options}
                 
                                       // options={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1.options:this.state.chartExample2.options)}
                                     />  
-                    :
+                    
 
-                    <Line
+                    {/* <Line
                     data={this.state.chartExample2[this.state.bigChartData]}
                     options={this.state.chartExample2.options}
 
                     // options={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1.options:this.state.chartExample2.options)}
                   />  
-                  }
+                  } */}
                     {/* // <Line
                     //   data={(this.state.bigChartData === "data1" || "data2"? this.state.chartExample1[this.state.bigChartData] : this.state.chartExample2[this.state.bigChartData])}
                     //   // options={this.chart1_2_options}
