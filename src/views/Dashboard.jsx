@@ -106,6 +106,7 @@ let chart1_options = {
           zeroLineColor: "transparent"
         },
         ticks: {
+          precision: 0,
           suggestedMin: 0,
           // suggestedMax: 100,
           padding: 20,
@@ -563,20 +564,20 @@ class Dashboard extends React.Component {
         // newdate = date.split("/").reverse().join("-");
         let cummulative_counter = 0;
 
-        for (let index = 0; index < responseData.length - 1; index++) {
+        for (let index = 0; index < responseData.length; index++) {
           let x = responseData[index]["DATE"];
           let newdate = x
             .split("/")
             .reverse()
             .join("-");
           let t1 = newdate + " " + responseData[index]["TIME"];
-          let y = responseData[index + 1]["DATE"];
-          let newdate1 = y
-            .split("/")
-            .reverse()
-            .join("-");
-          let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
-          let td = new Date(t2) - new Date(t1);
+          // let y = responseData[index + 1]["DATE"];
+          // let newdate1 = y
+          //   .split("/")
+          //   .reverse()
+          //   .join("-");
+          // let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
+          // let td = new Date(t2) - new Date(t1);
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1);
           let dateNow = new Date()
@@ -622,12 +623,7 @@ class Dashboard extends React.Component {
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             cummulative_counter = cummulative_counter + parseFloat(responseData[index]["FLOW PULSE"])
             a[i]["y"] = cummulative_counter
-            i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            cummulative_counter = cummulative_counter + parseFloat(responseData[index + 1]["FLOW PULSE"])
-            a[i]["y"] = cummulative_counter
-              i = i + 1;
+            i = i +i;
 
         
           } 
@@ -702,7 +698,7 @@ class Dashboard extends React.Component {
         }
         else{
           this.setState({
-            deviceStatus:"Device Connected -- Signal Strength:" + " " + responseData[0]["SIGNAL STRENGTH"] 
+            deviceStatus:"Device Connected -- Signal Strength:" + " " + this.state.signalStrength 
           });
         }
       })

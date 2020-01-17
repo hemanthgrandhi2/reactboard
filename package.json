@@ -25,6 +25,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "client": "python mqttClient.py",
+    "server" : "flask run",
+    "dev" : "start npm start && start npm run client && start npm run server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

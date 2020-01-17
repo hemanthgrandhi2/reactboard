@@ -68,7 +68,7 @@ def signal():
 @app.route("/checkdev", methods = ['GET'])
 def check_device_status():
     try:
-        x = mycol.find({"SIGNAL STRENGTH":{"$exists": "true"}}, {"DATE": 1, "TIME" :1, "SIGNAL STRENGTH": 1 }).sort([("_id", -1)]).limit(1)
+        x = mycol.find({"_id":{"$exists": "true"}}, {"DATE": 1, "TIME" :1, "SIGNAL STRENGTH": 1 }).sort([("_id", -1)]).limit(1)
         return dumps(x)
     except e:
         return dumps({'error': str(e)})
