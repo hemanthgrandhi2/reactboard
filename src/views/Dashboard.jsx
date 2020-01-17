@@ -464,7 +464,7 @@ class Dashboard extends React.Component {
           if(td2<120000)  {
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);;
+            a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);
             i = i + 1;
 
         
@@ -541,7 +541,7 @@ class Dashboard extends React.Component {
         this.setState({
           temperature: a
         });
-        console.log(this.state.temperature);
+        // console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
@@ -560,7 +560,7 @@ class Dashboard extends React.Component {
         let i = 0;
         // newdate = date.split("/").reverse().join("-");
         let cummulative_counter = 0;
-
+        console.log(responseData);
         for (let index = 0; index < responseData.length; index++) {
           let x = responseData[index]["DATE"];
           let newdate = x
@@ -588,47 +588,19 @@ class Dashboard extends React.Component {
 
           }
           if ( td2<120000) {
-            // a[i] = {};
-            // a[i]["x"] = newdate + " " + responseData[index]["TIME"];
-            // a[i]["y"] = 0
-            // i = i + 1;
-            // a[i] = {};
-            // let time1 = new Date(t1)
-            // let timediff1 = parseFloat(responseData[index]["FLOW PULSE"]) *2;
-            // a[i]["x"] = time1.setSeconds(time1.getSeconds + timediff1)
-            // a[i]["y"] = responseData[index]["FLOW PULSE"];
-            // i = i + 1;
-            // a[i] = {};
-            // a[i]["x"] = time1.setSeconds(time1.getSeconds + timediff1)
-            // a[i]["y"] = 0;
-            // i = i + 1;
-            // a[i] = {};
-            // a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            // a[i]["y"] = 0;
-            // i = i + 1;
-            // a[i] = {};
-            // let time2 = new Date(t2)
-            // let timediff2 = parseFloat(responseData[index +1]["FLOW PULSE"]) *2;
-            // a[i]["x"] = time2.setSeconds(time2.getSeconds + timediff2);
-            // a[i]["y"] = responseData[index + 1]["FLOW PULSE"];
-            //   i = i + 1;
-            //   a[i] = {};
-            //   a[i]["x"] = time2.setSeconds(time2.getSeconds + timediff2);
-            //   a[i]["y"] = 0;
-            //     i = i + 1;
             a[i] = {};
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             cummulative_counter = cummulative_counter + parseFloat(responseData[index]["FLOW PULSE"])
             a[i]["y"] = cummulative_counter
-            i = i +i;
-
-        
+            i = i +1 ;
           } 
         }
+        console.log(a);
+
+
         this.setState({
           flow: a
         });
-        //console.log(this.state.temperature);
       })
       .catch(error => {
         console.error(error);
