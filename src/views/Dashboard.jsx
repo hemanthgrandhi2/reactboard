@@ -407,7 +407,7 @@ class Dashboard extends React.Component {
     this.interval = setInterval(() => this.getAlerts(), 1000);
     this.interval = setInterval(() => this.getSignal(), 1000);
     this.interval = setInterval(() => this.getDeviceStatus(), 1000);
-    this.interval = setInterval(() => this.getLocation(), 5000);
+    this.interval = setInterval(() => this.getLocation(), 1000);
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -423,7 +423,7 @@ class Dashboard extends React.Component {
       .then(responseData => {
         let a = [];
         let i = 0;
-        for (let index = 0; index < responseData.length - 1; index++) {
+        for (let index = 0; index < responseData.length; index++) {
           let x = responseData[index]["DATE"];
           //converting recieved data into UTC format to find difference
           let newdate = x
@@ -431,13 +431,13 @@ class Dashboard extends React.Component {
             .reverse()
             .join("-");
           let t1 = newdate + " " + responseData[index]["TIME"];
-          let y = responseData[index + 1]["DATE"];
-          let newdate1 = y
-            .split("/")
-            .reverse()
-            .join("-");
-          let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
-          let td = new Date(t2) - new Date(t1);
+          // let y = responseData[index + 1]["DATE"];
+          // let newdate1 = y
+          //   .split("/")
+          //   .reverse()
+          //   .join("-");
+          // let t2 = newdate1 + " " + responseData[index + 1]["TIME"];
+          // let td = new Date(t2) - new Date(t1);
           // let td2 = new Date("April 1, 2019 21:13:00") - new Date(t1)
           let td2 = new Date() - new Date(t1)
 
@@ -466,10 +466,7 @@ class Dashboard extends React.Component {
             a[i]["x"] = newdate + " " + responseData[index]["TIME"];
             a[i]["y"] = (responseData[index]["WATER LEVEL"]==="HIGH"?1 : 0);;
             i = i + 1;
-            a[i] = {};
-            a[i]["x"] = newdate1 + " " + responseData[index + 1]["TIME"];
-            a[i]["y"] = (responseData[index + 1]["WATER LEVEL"]==="HIGH"?1 : 0);
-              i = i + 1;
+
         
           }
         }
